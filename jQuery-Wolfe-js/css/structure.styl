@@ -1,0 +1,267 @@
+@import 'utility/normalize.css'
+@import 'utility/boxmodel.css'
+
+// -
+// -VARIABLES
+// -
+
+//  colour
+
+color-brand-steel 		= rgb( 130, 133, 140 )
+color-brand-cream 		= rgb( 227, 226, 222 )
+color-brand-red 		= rgb( 230, 25, 33 )
+
+zindex-controls			= 1500
+zindex-header 			= 1000
+zindex-child-info 		= 100
+zindex-child-photo 		= 1
+
+unit-dot 				= 12px
+
+// -
+// -EASING FUNCTIONS
+// -
+
+// ease-in
+ease-in-quad    		= cubic-bezier( 0.550,  0.085, 0.680, 0.530 )
+ease-in-cubic    		= cubic-bezier( 0.550,  0.055, 0.675, 0.190 )
+ease-in-quart    		= cubic-bezier( 0.895,  0.030, 0.685, 0.220 )
+ease-in-quint    		= cubic-bezier( 0.755,  0.050, 0.855, 0.060 )
+ease-in-sine    		= cubic-bezier( 0.470,  0.000, 0.745, 0.715 )
+ease-in-expo    		= cubic-bezier( 0.950,  0.050, 0.795, 0.035 )
+ease-in-circ    		= cubic-bezier( 0.600,  0.040, 0.980, 0.335 )
+ease-in-back    		= cubic-bezier( 0.600, -0.280, 0.735, 0.045 )
+
+// ease-out
+ease-out-quad    		= cubic-bezier( 0.250,  0.460, 0.450, 0.940 )
+ease-out-cubic    		= cubic-bezier( 0.215,  0.610, 0.355, 1.000 )
+ease-out-quart    		= cubic-bezier( 0.165,  0.840, 0.440, 1.000 )
+ease-out-quint    		= cubic-bezier( 0.230,  1.000, 0.320, 1.000 )
+ease-out-sine    		= cubic-bezier( 0.390,  0.575, 0.565, 1.000 )
+ease-out-expo    		= cubic-bezier( 0.190,  1.000, 0.220, 1.000 )
+ease-out-circ    		= cubic-bezier( 0.075,  0.820, 0.165, 1.000 )
+ease-out-back    		= cubic-bezier( 0.175,  0.885, 0.320, 1.275 )
+
+// ease-in-out
+ease-in-out-quad 		= cubic-bezier( 0.455,  0.030, 0.515, 0.955 )
+ease-in-out-cubic 		= cubic-bezier( 0.645,  0.045, 0.355, 1.000 )
+ease-in-out-quart 		= cubic-bezier( 0.770,  0.000, 0.175, 1.000 )
+ease-in-out-quint 		= cubic-bezier( 0.860,  0.000, 0.070, 1.000 )
+ease-in-out-sine 		= cubic-bezier( 0.445,  0.050, 0.550, 0.950 )
+ease-in-out-expo 		= cubic-bezier( 1.000,  0.000, 0.000, 1.000 )
+ease-in-out-circ 		= cubic-bezier( 0.785,  0.135, 0.150, 0.860 )
+ease-in-out-back 		= cubic-bezier( 0.680, -0.550, 0.265, 1.550 )
+
+
+// -
+// - UTILITY FUNCTIONS
+// -
+
+make-col( number )
+	width 								px-em( ( number * GRID-column  ) + ( ( number - 1 ) * GRID-gutter ) )
+
+make-push( number )
+	margin-left 						px-em( ( number * GRID-column  ) + ( ( number * GRID-gutter ) + ( GRID-gutter / 2 ) ) )
+
+em-px( x, base = null )
+	fontsize = base ? base : 1
+	if unit( fontsize ) == '%'
+		fontsize = fontsize / 100
+	unit( x * 16 * fontsize, px )
+
+px-em( x, base = null )
+	fontsize = base ? base : 1
+	if unit( fontsize ) == '%'
+		fontsize = fontsize / 100
+	unit( ( x / 16 / fontsize ), em )
+
+sanitize-quote( val )
+	if val is a 'string'
+		unquote( val )
+	else
+		val
+
+box-shadow( args... )
+	-webkit-box-shadow					args
+	box-shadow 							args
+
+border-radius( n )
+	-webkit-border-radius 				px-em( n )
+	-moz-border-radius  				px-em( n )
+	border-radius 						px-em( n )
+
+background-linear-gradient( startPoint, startColor, startInterval, endColor, endInterval, deprecatedWebkitStartPoint = false, deprecatedWebkitEndPoint = false)
+	background-color 					startColor
+	if deprecatedWebkitStartPoint && deprecatedWebkitEndPoint
+		background-image 				-webkit-gradient( linear, deprecatedWebkitStartPoint, deprecatedWebkitEndPoint, color-stop( startInterval, startColor ), color-stop( endInterval, endColor ) )
+	background-image 					-webkit-linear-gradient( startPoint, startColor startInterval, endColor endInterval )
+	background-image 					-moz-linear-gradient( startPoint, startColor startInterval, endColor endInterval)
+	background-image 					-ms-linear-gradient( startPoint, startColor startInterval, endColor endInterval )
+	background-image 					-o-linear-gradient( startPoint, startColor startInterval, endColor endInterval)
+	background-image 					linear-gradient( startPoint, startColor startInterval, endColor endInterval )
+
+transform-scale( w, h )
+	-webkit-transform 					scale( w, h )
+	-moz-transform 						scale( w, h )
+	-o-transform 						scale( w, h )
+	transform 							scale( w, h )
+
+transform-translate-y( y )
+	-webkit-transform					translateY( px-em( y ) )
+	-moz-transform						translateY( px-em( y ) )
+	-ms-transform						translateY( px-em( y ) )
+	-o-transform						translateY( px-em( y ) )
+	transform							translateY( px-em( y ) )
+
+transform-translate-x( x )
+	-webkit-transform					translateX( px-em( x ) )
+	-moz-transform						translateX( px-em( x ) )
+	-ms-transform						translateX( px-em( x ) )
+	-o-transform						translateX( px-em( x ) )
+	transform							translateX( px-em( x ) )
+
+transform-rotate( deg )
+	-webkit-transform 					rotate( deg )
+	-moz-transform 						rotate( deg )
+	-o-transform 						rotate( deg )
+	transform 							rotate( deg )
+
+transform-origin( x = center, y = center)
+	transform-origin 					x y
+
+transition( prop, time, easing, delay = null )
+	-webkit-backface-visibility  		hidden
+	-webkit-transition 					prop time easing delay
+	-moz-transition 					prop time easing delay
+	-o-transition 						prop time easing delay
+	transition 							prop time easing delay
+
+animate( name, time, iteration, direction = normal, easing, delay = null, state = null )
+	-webkit-animation-name 	 			sanitize-quote( name )
+	-webkit-animation-duration			sanitize-quote( time )
+	-webkit-animation-iteration-count 	sanitize-quote( iteration )
+	-webkit-animation-direction 		sanitize-quote( direction )
+	-webkit-animation-timing-function 	sanitize-quote( easing )
+	-webkit-animation-delay 			sanitize-quote( delay )
+	-webkit-animation-fill-mode			sanitize-quote( state )
+	-moz-animation-name 				sanitize-quote( name )
+	-moz-animation-duration 			sanitize-quote( time )
+	-moz-animation-iteration-count 		sanitize-quote( iteration )
+	-moz-animation-direction 			sanitize-quote( direction )
+	-moz-animation-timing-function 		sanitize-quote( easing )
+	-moz-animation-delay 				sanitize-quote( delay )
+	-moz-animation-fill-mode			sanitize-quote( state )
+	animation-name 						sanitize-quote( name )
+	animation-duration 					sanitize-quote( time )
+	animation-iteration-count 			sanitize-quote( iteration )
+	animation-direction 				sanitize-quote( direction )
+	animation-timing-function 			sanitize-quote( easing )
+	animation-delay 					sanitize-quote( delay )
+	animation-fill-mode					sanitize-quote( state )
+
+/*
+--------------------------------------------------------------------------------------------------------------
+- SCAFFOLDING
+--------------------------------------------------------------------------------------------------------------
+*/
+
+h1
+h2
+h3
+h4
+h5
+h6
+p
+	font-size 							100%
+	font-style 							inherit
+	font-weight 						inherit
+	line-height 						inherit
+	margin 								0
+	padding 							0
+
+ul
+ol
+dl
+	list-style-type 					none
+	margin 								0
+	padding 							0
+
+a
+a:link
+a:hover
+a:visited
+	text-decoration 					none
+
+span.italic
+	font-style 							italic
+	font-weight 						400
+
+html
+body
+	background-color 					white
+	color 								black
+	font-family 						'Open Sans', Helvetica, sans-serif
+	font-weight 						300
+	height 								100%
+	margin								0
+	min-height 							100%
+	padding 							0
+	width 								100%
+
+body
+	overflow							hidden
+
+h1
+	font-size 36px
+
+.wrapper
+	background-color 					rgb( 230, 230, 230 )
+	display 							block
+	height 								100%
+	left 								0
+	overflow 							hidden
+	position 							absolute
+	top 								0
+	width 								100%
+
+.wrapper-inner
+	display 							block
+	transition( all, 1s, linear )
+
+.slide
+	display 							block
+	float 								left
+	position 							relative
+
+.slide:nth-of-type( 2n )
+	background-color 					rgb( 245, 245, 245 )
+
+.dots
+	position 							fixed
+	right 								16px
+	top 								50%
+	width 								unit-dot
+	z-index 							1000
+
+.dot
+	background-color 					transparent
+	border 								1px solid black
+	cursor 								pointer
+	display 							block
+	height 								unit-dot
+	margin-bottom 						unit-dot
+	width 								unit-dot
+	border-radius( 1000px )
+	transition( background-color, 0.5s, ease-in-out-sine )
+
+.dot:hover
+.dot.is-selected
+	background-color 					black
+
+
+
+
+
+
+
+
